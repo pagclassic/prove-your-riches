@@ -23,7 +23,7 @@ const ParticlesBackground = () => {
             value: 30,
             density: {
               enable: true,
-              value_area: 800,
+              area: 800,
             },
           },
           color: {
@@ -34,11 +34,15 @@ const ParticlesBackground = () => {
           },
           opacity: {
             value: 0.3,
-            random: true,
+            random: {
+              enable: true,
+            },
           },
           size: {
             value: 3,
-            random: true,
+            random: {
+              enable: true,
+            },
           },
           move: {
             enable: true,
@@ -46,29 +50,34 @@ const ParticlesBackground = () => {
             direction: "none",
             random: true,
             straight: false,
-            out_mode: "out",
+            outModes: {
+              default: "out",
+            },
             bounce: false,
           },
         },
         interactivity: {
-          detect_on: "canvas",
+          detectsOn: "canvas",
           events: {
-            onhover: {
+            onHover: {
               enable: true,
               mode: "grab",
             },
-            resize: true,
+            resize: {
+              enable: true,
+              delay: 0,
+            },
           },
           modes: {
             grab: {
               distance: 150,
-              line_linked: {
+              links: {
                 opacity: 0.3,
               },
             },
           },
         },
-        retina_detect: true,
+        detectRetina: true,
       }}
     />
   );
