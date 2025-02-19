@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
+import ParticlesBackground from "../components/ParticlesBackground";
 import WealthCalculator from "../components/WealthCalculator";
 
 const Index = () => {
@@ -35,6 +36,8 @@ const Index = () => {
       exit={{ opacity: 0 }}
       className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-black relative overflow-hidden"
     >
+      <ParticlesBackground />
+      
       <motion.div
         variants={titleVariants}
         initial="hidden"
