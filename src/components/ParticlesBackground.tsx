@@ -23,7 +23,7 @@ const ParticlesBackground = () => {
             value: 30,
             density: {
               enable: true,
-              value_area: 800,
+              area: 800,
             },
           },
           color: {
@@ -34,13 +34,13 @@ const ParticlesBackground = () => {
           },
           opacity: {
             value: 0.3,
-            anim: {
+            random: {
               enable: true,
             },
           },
           size: {
             value: 3,
-            anim: {
+            random: {
               enable: true,
             },
           },
@@ -50,9 +50,10 @@ const ParticlesBackground = () => {
             direction: "none",
             random: true,
             straight: false,
-            out_modes: {
+            outModes: {
               default: "out",
             },
+            bounce: false,
           },
         },
         interactivity: {

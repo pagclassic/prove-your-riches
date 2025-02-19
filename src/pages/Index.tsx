@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import ParticlesBackground from "../components/ParticlesBackground";
-import WealthCalculator from "../components/WealthCalculator";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -61,7 +60,22 @@ const Index = () => {
           </motion.p>
         </motion.div>
 
-        <WealthCalculator />
+        <motion.div
+          variants={childVariants}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="inline-block"
+        >
+          <button
+            onClick={() => navigate("/payment")}
+            className="premium-button group"
+          >
+            <span className="inline-flex items-center gap-2">
+              Prove Me
+              <Sparkles className="w-5 h-5 transition-transform group-hover:rotate-12" />
+            </span>
+          </button>
+        </motion.div>
       </motion.div>
 
       <motion.div
