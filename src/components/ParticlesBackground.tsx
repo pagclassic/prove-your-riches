@@ -2,7 +2,7 @@
 import { useCallback } from "react";
 import Particles from "@tsparticles/react";
 import type { Engine } from "@tsparticles/engine";
-import { loadSlim } from "tsparticles-slim";
+import { loadSlim } from "@tsparticles/slim";
 
 const ParticlesBackground = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
@@ -57,7 +57,7 @@ const ParticlesBackground = () => {
           },
         },
         interactivity: {
-          detectsOn: "canvas",
+          detectsOn: "window",
           events: {
             onHover: {
               enable: true,
