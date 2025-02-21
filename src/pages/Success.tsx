@@ -1,14 +1,16 @@
-
 import { motion } from "framer-motion";
 import { Share2, Trophy, Crown, Star, Diamond, Gem, Rocket, Globe2, Wallet, Users, Building } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const Success = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [rank, setRank] = useState<number>(0);
   const [netWorthPercentile, setNetWorthPercentile] = useState<string>("99.9");
   const [memberCount, setMemberCount] = useState<number>(0);
+  const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
 
   useEffect(() => {
     // Simulate calculating user's rank and active members
@@ -36,6 +38,47 @@ const Success = () => {
     }
   };
 
+  const premiumPackages = [
+    {
+      id: "silver",
+      name: "Silver Elite",
+      price: "999",
+      features: [
+        "Access to networking events",
+        "Basic investment insights",
+        "Priority support",
+      ],
+    },
+    {
+      id: "gold",
+      name: "Gold Prestige",
+      price: "2,499",
+      features: [
+        "All Silver benefits",
+        "Private wealth consultations",
+        "Exclusive investment opportunities",
+        "Quarterly mastermind sessions",
+      ],
+    },
+    {
+      id: "platinum",
+      name: "Platinum Dynasty",
+      price: "9,999",
+      features: [
+        "All Gold benefits",
+        "Private jet partnerships",
+        "Luxury property access",
+        "Personal wealth concierge",
+        "Elite global events access",
+      ],
+    },
+  ];
+
+  const handlePackageSelect = (packageId: string) => {
+    setSelectedPackage(packageId);
+    navigate(`/checkout/${packageId}`);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -47,7 +90,7 @@ const Success = () => {
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="glass p-8 rounded-2xl max-w-2xl w-full text-center space-y-8"
+        className="glass p-8 rounded-2xl max-w-4xl w-full text-center space-y-8"
       >
         {/* Header Section */}
         <div className="relative">
@@ -69,6 +112,46 @@ const Success = () => {
           <p className="text-2xl text-gray-300">
             You're in the top <span className="text-gold font-bold">{netWorthPercentile}%</span>
           </p>
+        </div>
+
+        {/* Premium Packages */}
+        <div className="space-y-6">
+          <h3 className="text-2xl font-semibold text-gold">Choose Your Elite Package</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {premiumPackages.map((pkg) => (
+              <motion.div
+                key={pkg.id}
+                whileHover={{ scale: 1.02 }}
+                className={`bg-black/30 p-6 rounded-xl border-2 ${
+                  pkg.id === 'platinum' ? 'border-gold' : 'border-gray-800'
+                }`}
+              >
+                <h4 className="text-xl font-semibold mb-2">{pkg.name}</h4>
+                <div className="text-3xl font-bold text-gold mb-4">
+                  ${pkg.price}
+                  <span className="text-sm text-gray-400">/year</span>
+                </div>
+                <ul className="text-left space-y-2 mb-6">
+                  {pkg.features.map((feature, index) => (
+                    <li key={index} className="flex items-center gap-2 text-sm">
+                      <div className="w-1.5 h-1.5 rounded-full bg-gold" />
+                      <span className="text-gray-300">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => handlePackageSelect(pkg.id)}
+                  className={`w-full py-2 rounded-lg transition-colors ${
+                    pkg.id === 'platinum'
+                      ? 'bg-gold text-black hover:bg-gold/90'
+                      : 'bg-white/10 text-white hover:bg-white/20'
+                  }`}
+                >
+                  Select Package
+                </button>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         {/* Achievement Badges */}
@@ -117,29 +200,7 @@ const Success = () => {
           </div>
         </div>
 
-        {/* Exclusive Perks */}
-        <div className="bg-black/20 p-6 rounded-xl">
-          <h3 className="text-xl font-semibold mb-4 text-gold">Elite Benefits</h3>
-          <ul className="space-y-3 text-left">
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-              <span className="text-gray-300">Private jet partnership program</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-              <span className="text-gray-300">Exclusive investment opportunities</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-              <span className="text-gray-300">Dedicated wealth concierge</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-              <span className="text-gray-300">Members-only luxury events</span>
-            </li>
-          </ul>
-        </div>
-
+        {/* Share Button */}
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
