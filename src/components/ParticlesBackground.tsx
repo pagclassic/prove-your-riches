@@ -23,7 +23,7 @@ const ParticlesBackground = () => {
             value: 30,
             density: {
               enable: true,
-              area: 800,
+              value_area: 800, // Changed from 'area' to 'value_area'
             },
           },
           color: {
@@ -34,13 +34,15 @@ const ParticlesBackground = () => {
           },
           opacity: {
             value: 0.3,
-            random: {
+            random: true, // Changed property location
+            anim: {
               enable: true,
             },
           },
           size: {
             value: 3,
-            random: {
+            random: true, // Changed property location
+            anim: {
               enable: true,
             },
           },
@@ -50,9 +52,7 @@ const ParticlesBackground = () => {
             direction: "none",
             random: true,
             straight: false,
-            outModes: {
-              default: "out",
-            },
+            out_mode: "out", // Changed from 'outModes' to 'out_mode'
             bounce: false,
           },
         },
@@ -63,10 +63,7 @@ const ParticlesBackground = () => {
               enable: true,
               mode: "grab",
             },
-            resize: {
-              enable: true,
-              delay: 0,
-            },
+            resize: true,
           },
           modes: {
             grab: {
