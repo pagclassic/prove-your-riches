@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Share2, Trophy, Crown, Star, Diamond } from "lucide-react";
+import { Share2, Trophy, Crown, Star, Diamond, Gem, Rocket, Globe2, Wallet, Users, Building } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -8,14 +8,17 @@ const Success = () => {
   const { toast } = useToast();
   const [rank, setRank] = useState<number>(0);
   const [netWorthPercentile, setNetWorthPercentile] = useState<string>("99.9");
+  const [memberCount, setMemberCount] = useState<number>(0);
 
   useEffect(() => {
-    // Simulate calculating user's rank
+    // Simulate calculating user's rank and active members
     const randomRank = Math.floor(Math.random() * 100) + 1;
     setRank(randomRank);
     // Random percentile between 99.1 and 99.9
     const randomPercentile = (99.1 + Math.random() * 0.8).toFixed(1);
     setNetWorthPercentile(randomPercentile);
+    // Random number of active elite members
+    setMemberCount(Math.floor(Math.random() * (999 - 800 + 1)) + 800);
   }, []);
 
   const handleShare = async () => {
@@ -46,8 +49,16 @@ const Success = () => {
         transition={{ duration: 0.5 }}
         className="glass p-8 rounded-2xl max-w-2xl w-full text-center space-y-8"
       >
-        <div className="flex justify-center">
-          <Crown className="text-gold w-16 h-16 animate-float" />
+        {/* Header Section */}
+        <div className="relative">
+          <div className="flex justify-center">
+            <Crown className="text-gold w-16 h-16 animate-float" />
+          </div>
+          <div className="absolute top-0 right-0">
+            <div className="bg-gold/10 rounded-full px-4 py-1 text-sm">
+              <span className="text-gold">{memberCount} active members</span>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-4">
@@ -82,21 +93,49 @@ const Success = () => {
           </div>
         </div>
 
+        {/* Premium Features Grid */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="bg-black/20 p-4 rounded-xl">
+            <Rocket className="w-6 h-6 text-gold mb-2" />
+            <h4 className="font-semibold mb-1">Priority Access</h4>
+            <p className="text-sm text-gray-400">Skip the line at exclusive events</p>
+          </div>
+          <div className="bg-black/20 p-4 rounded-xl">
+            <Globe2 className="w-6 h-6 text-gold mb-2" />
+            <h4 className="font-semibold mb-1">Global Network</h4>
+            <p className="text-sm text-gray-400">Connect with elite worldwide</p>
+          </div>
+          <div className="bg-black/20 p-4 rounded-xl">
+            <Wallet className="w-6 h-6 text-gold mb-2" />
+            <h4 className="font-semibold mb-1">Wealth Insights</h4>
+            <p className="text-sm text-gray-400">Exclusive investment data</p>
+          </div>
+          <div className="bg-black/20 p-4 rounded-xl">
+            <Building className="w-6 h-6 text-gold mb-2" />
+            <h4 className="font-semibold mb-1">VIP Properties</h4>
+            <p className="text-sm text-gray-400">Premier real estate access</p>
+          </div>
+        </div>
+
         {/* Exclusive Perks */}
         <div className="bg-black/20 p-6 rounded-xl">
-          <h3 className="text-xl font-semibold mb-4 text-gold">Your Elite Perks</h3>
+          <h3 className="text-xl font-semibold mb-4 text-gold">Elite Benefits</h3>
           <ul className="space-y-3 text-left">
             <li className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-              <span className="text-gray-300">Access to exclusive networking events</span>
+              <span className="text-gray-300">Private jet partnership program</span>
             </li>
             <li className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-              <span className="text-gray-300">Priority customer service</span>
+              <span className="text-gray-300">Exclusive investment opportunities</span>
             </li>
             <li className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-              <span className="text-gray-300">Special investment opportunities</span>
+              <span className="text-gray-300">Dedicated wealth concierge</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-gold" />
+              <span className="text-gray-300">Members-only luxury events</span>
             </li>
           </ul>
         </div>
