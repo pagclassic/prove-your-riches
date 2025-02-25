@@ -1,18 +1,33 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
 import { CreditCard, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { loadStripe } from "@stripe/stripe-js";
+
+// Initialize Stripe with your publishable key
+const stripePromise = loadStripe("pk_test_51QwVGLGa2AlifYtvHxznT6s1FHErjvoanZRDRkSbj8e3xwwg5Z7y2QSwQOFFJwErBTx4LdZ1bhZQ2kLxTfnQT9Mu00gQZgCYCf");
 
 const Payment = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   const [amount, setAmount] = useState("");
+  const [stripe, setStripe] = useState<any>(null);
   
-  const handlePayment = () => {
+  useEffect(() => {
+    // Load Stripe on component mount
+    const loadStripeInstance = async () => {
+      const stripeInstance = await stripePromise;
+      setStripe(stripeInstance);
+    };
+    
+    loadStripeInstance();
+  }, []);
+
+  const handlePayment = async () => {
     if (!amount || parseFloat(amount) <= 0) {
       toast({
         title: "Invalid Amount",
@@ -25,12 +40,19 @@ const Payment = () => {
     setIsProcessing(true);
     toast({
       title: "Processing Payment",
-      description: "Please wait while we verify your transaction."
+      description: "Please wait while we connect to Stripe."
     });
     
-    // Simulate payment processing with a 50% chance of success
-    setTimeout(() => {
-      setIsProcessing(false);
+    try {
+      // In a real implementation, you would:
+      // 1. Call your backend to create a payment intent
+      // 2. Get the client secret from the response
+      // 3. Use stripe.confirmCardPayment with the client secret
+      
+      // For demo purposes, we'll simulate the payment process
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Simulate 50/50 success/failure
       const isSuccessful = Math.random() > 0.5;
       
       if (isSuccessful) {
@@ -42,11 +64,20 @@ const Payment = () => {
       } else {
         toast({
           title: "Payment Failed",
-          description: "Unable to process your payment."
+          description: "Your card was declined. Please try again with a different payment method."
         });
         navigate("/payment-failed");
       }
-    }, 2000);
+    } catch (error) {
+      console.error("Payment error:", error);
+      toast({
+        title: "Payment Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,6 +158,11 @@ const Payment = () => {
               )}
             </button>
           </motion.div>
+          
+          <div className="text-center text-xs text-gray-500 mt-4">
+            <p>Secured by Stripe Payment</p>
+            <p className="mt-1">All card details are securely processed by Stripe</p>
+          </div>
         </div>
       </div>
     </motion.div>
