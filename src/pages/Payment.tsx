@@ -4,13 +4,24 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
 import { CreditCard, Loader2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const Payment = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [amount, setAmount] = useState("");
   
   const handlePayment = () => {
+    if (!amount || parseFloat(amount) <= 0) {
+      toast({
+        title: "Invalid Amount",
+        description: "Please enter a valid amount greater than 0",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsProcessing(true);
     toast({
       title: "Processing Payment",
@@ -38,6 +49,20 @@ const Payment = () => {
     }, 2000);
   };
 
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Only allow numbers and decimal point
+    const value = e.target.value.replace(/[^0-9.]/g, '');
+    
+    // Ensure only one decimal point
+    const parts = value.split('.');
+    if (parts.length > 2) return;
+    
+    // Limit decimal places to 2
+    if (parts[1] && parts[1].length > 2) return;
+    
+    setAmount(value);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -52,22 +77,30 @@ const Payment = () => {
         <div className="space-y-6">
           <div className="text-center text-gray-300">
             <p className="mb-4">Ready to join the elite?</p>
-            <p className="text-sm">Press the button below to process your payment</p>
+            <p className="text-sm">Enter your desired amount and process the payment</p>
           </div>
           
           <div className="bg-black/20 p-6 rounded-xl mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-gray-400">Elite Membership</span>
-              <span className="text-gold font-bold">$999.00</span>
-            </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-400">Processing Fee</span>
-              <span className="text-gray-300">$0.00</span>
-            </div>
-            <div className="border-t border-gray-800 my-4"></div>
-            <div className="flex items-center justify-between font-bold">
-              <span>Total</span>
-              <span className="text-gold">$999.00</span>
+            <div className="space-y-4">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="amount" className="text-gray-400">Enter Amount</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+                  <Input
+                    id="amount"
+                    type="text"
+                    value={amount}
+                    onChange={handleAmountChange}
+                    className="pl-7 bg-black/30 border-gray-800 text-white"
+                    placeholder="0.00"
+                  />
+                </div>
+              </div>
+              <div className="border-t border-gray-800 my-4"></div>
+              <div className="flex items-center justify-between font-bold">
+                <span>Total</span>
+                <span className="text-gold">${amount || '0.00'}</span>
+              </div>
             </div>
           </div>
           
@@ -78,8 +111,8 @@ const Payment = () => {
           >
             <button
               onClick={handlePayment}
-              disabled={isProcessing}
-              className="premium-button w-full flex items-center justify-center gap-2"
+              disabled={isProcessing || !amount}
+              className="premium-button w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isProcessing ? (
                 <>
